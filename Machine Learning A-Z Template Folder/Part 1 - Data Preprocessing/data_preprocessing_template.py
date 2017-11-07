@@ -21,6 +21,7 @@ labelencoder_X = LabelEncoder()
 # Can't just do this. It will think one country is greater than others. 
 X[:,0] = labelencoder_X.fit_transform(X[:,0])
 # This way, the ML algorithm won't attribute order to the categorical feature.
+# AKA dummy variable.
 onehotencoder = OneHotEncoder(categorical_features = [0])
 X = onehotencoder.fit_transform(X).toarray()
 
@@ -32,10 +33,23 @@ y = labelencoder_y.fit_transform(y)
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
 
+# Most ML algorithm are based on euclidean distance. 
+# If features are on different scale (age vs salary's range)
+# then euclidean space will be dominated by salary.
+# Tho even for decision trees, we should still scale so that
+# the algorithm can converge much faster. 
+
+# Standardization
+# x-mean/std
+# Normalization
+# x-min(x)/max(x)-min(x)
 # Feature Scaling
-"""from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler
 sc_X = StandardScaler()
+# We are also scaling the dummy vars. 
+# If we scale, everything will be on the same scale. 
+# but we lose the intuition. 
 X_train = sc_X.fit_transform(X_train)
+# No fit on test set. 
 X_test = sc_X.transform(X_test)
-sc_y = StandardScaler()
-y_train = sc_y.fit_transform(y_train)"""
+# No need to fit Y set because this is a classification problem.\
