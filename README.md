@@ -1,1 +1,2 @@
 # udemyML
+Holds course exercises
